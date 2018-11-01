@@ -11,11 +11,11 @@ def cypher(str0):
   while i < len(words):
     str1 += cypherWord(words[i])
     str1 += " "
-    i ++
+    i += 1
   str1 -= " "
   return str1
-assert cypher("RHYS MADER") == str(cypherWord("RHYS") + cypherWord("MADER"))
-assert cypher("DAVID CULLEN") == str(cypherWord("DAVID") + cypherWord("CULLEN"))
+assert cypher("RHYS MADER") == str(cypherWord("RHYS") + " " + cypherWord("MADER"))
+assert cypher("DAVID CULLEN") == str(cypherWord("DAVID") + " " + cypherWord("CULLEN"))
 
 #String -> String
 def cypherWord(word):
@@ -26,7 +26,7 @@ def cypherWord(word):
 	while i < len(charlist):
 		n = TABLE.find(charlist[i])
 		num += n * BASE ** i
-		i ++
+		i += 1
 	return str(num)
 assert cypherWord("RHYS") == str(17 * BASE ** 3 + 7 * BASE ** 2 + 24 * BASE + 18)
 assert cypherWord("MADER") == str(12 * BASE ** 4 + 3 * BASE ** 2 + 4 * BASE + 17)
@@ -37,7 +37,57 @@ def explode(str0):
 	i = 0
 	while i < len(str0):
 		list1.append(str0[i])
-		i ++
+		i += 1
 	return list1
 assert explode("RHYS") == ["R", "H", "Y", "S"]
 assert explode("MADER") == ["M", "A", "D", "E", "R"]
+
+#String -> String
+def decypher(str0):
+	wordlist = str0.split(" ")
+	i = 0
+	str1 = ""
+	while i < len(wordlist):
+		str1 += decypherWord(wordlist[i])
+		str1 += " "
+		i += 1
+	str1 -= " "
+	return str1
+assert decypher(cypher("RHYS MADER")) == "RHYS MADER"
+assert decypher(cypher("DAVID CULLEN")) == "DAVID CULLEN"
+
+#String -> String
+def decypherWord(str0):
+	global BASE, TABLE
+	num = int(str0)
+	power = 0
+	while num > BASE:
+		num /= BASE
+		power += 1
+	num = int(str0)
+	charlist = []
+	while power >= 0:
+		n = num // BASE ** power
+		charlist.append(n)
+		num -= n * BASE ** power
+		power -= 1
+	i = 0
+	while i < len(charlist):
+		charlist[i] = TABLE[charlist[i]]
+		i += 1
+	str1 = implode(charlist)
+	return str1
+assert decypherWord(cypherWord("RHYS")) == "RHYS"
+assert decypherWord(cypherWord("MADER")) == "MADER"
+
+#List -> String
+def impolde(list0):
+	i = 0
+	str1 = ""
+	while i < len(list0):
+		str1 += list0[i]
+		i += 1
+	return str1
+assert implode(["R", "H", "Y", "S"]) == "RHYS"
+assert implode(["M", "A", "D", "E", "R"]) == "MADER"
+assert implode([]) == ""
