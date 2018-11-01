@@ -2,6 +2,11 @@
 WORD_SEP = " "
 TABLE = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
 BASE = len(TABLE)
+HELP = "AVAILABLE COMMANDS:\n\'quit\': quit this program\n\'help\': display this help message\n\'cypher\': open cyphering program\n\'decypher\': open deyphering program"
+CYPH_PROMPT = "What do you wish to cypher? "
+DECYPH_PROMPT = "What do you wish to decypher? "
+COM_ERROR = "Command not recognised."
+COM_PROMPT = "Which command do you wish to execute? "
 
 #FUNCTIONS
 #String -> String
@@ -97,3 +102,26 @@ def impolde(list0):
 assert implode(["R", "H", "Y", "S"]) == "RHYS"
 assert implode(["M", "A", "D", "E", "R"]) == "MADER"
 assert implode([]) == ""
+
+#String -> String
+def command(str0):
+	global HELP, COM_ERROR, CYPH_PROMPT, DECYPH_PROMT
+	if str0 == "quit":
+		raise SystemExit
+	elif str0 == "help":
+		return HELP
+	elif str0 == "cypher":
+		com = raw_input("What do you wish to cypher? ")
+		return cypher(com)
+	elif str0 == "decypher":
+		com = raw_input("What do you wish to decypher? ")
+		return decypher(com)
+	else:
+		return COM_ERROR
+assert command("help") == HELP
+assert command("") == COM_ERROR
+
+#MAIN
+while True:
+	com = raw_input(COM_PROMPT)
+	print(command(com))
