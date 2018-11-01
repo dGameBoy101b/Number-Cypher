@@ -1,21 +1,24 @@
 #CONSTANTS
+WORD_SEP = " "
 TABLE = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
 BASE = len(TABLE)
 
 #FUNCTIONS
 #String -> String
 def cypher(str0):
-  words = str0.split(" ")
+	global WORD_SEP
+  words = str0.split(WORD_SEP)
   i = 0
   str1 = ""
   while i < len(words):
     str1 += cypherWord(words[i])
-    str1 += " "
+    str1 += WORD_SEP
     i += 1
-  str1 -= " "
+	end = len(str1) - len(WORD_SEP)
+  str1 = str1[0:end]
   return str1
-assert cypher("RHYS MADER") == str(cypherWord("RHYS") + " " + cypherWord("MADER"))
-assert cypher("DAVID CULLEN") == str(cypherWord("DAVID") + " " + cypherWord("CULLEN"))
+assert cypher("RHYS" + WORD_SEP + "MADER") == str(cypherWord("RHYS") + WORD_SEP + cypherWord("MADER"))
+assert cypher("DAVID" + WORD_SEP + "CULLEN") == str(cypherWord("DAVID") + WORD_SEP + cypherWord("CULLEN"))
 
 #String -> String
 def cypherWord(word):
@@ -41,17 +44,20 @@ def explode(str0):
 	return list1
 assert explode("RHYS") == ["R", "H", "Y", "S"]
 assert explode("MADER") == ["M", "A", "D", "E", "R"]
+assert explode("") == []
 
 #String -> String
 def decypher(str0):
+	global WORD_SEP
 	wordlist = str0.split(" ")
 	i = 0
 	str1 = ""
 	while i < len(wordlist):
 		str1 += decypherWord(wordlist[i])
-		str1 += " "
+		str1 += WORD_SEP
 		i += 1
-	str1 -= " "
+	end = len(str1) - len(WORD_SEP)
+	str1 = str1[0:end]
 	return str1
 assert decypher(cypher("RHYS MADER")) == "RHYS MADER"
 assert decypher(cypher("DAVID CULLEN")) == "DAVID CULLEN"
