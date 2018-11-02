@@ -1,6 +1,6 @@
 #CONSTANTS
 WORD_SEP = " "
-TABLE = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+TABLE = [WORD_SEP, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 BASE = len(TABLE)
 HELP = "AVAILABLE COMMANDS:\n\'quit\': quit this program\n\'help\': display this help message\n\'cypher\': open cyphering program\n\'decypher\': open deyphering program"
 COM_ERROR = "Command not recognised."
@@ -44,9 +44,9 @@ def cypher(str0):
   str1 = ""
   while i < len(words):
     str1 += cypherWord(words[i])
-    str1 += WORD_SEP
+    str1 += cypherWord(WORD_SEP)
     i += 1
-	end = len(str1) - len(WORD_SEP)
+	end = len(str1) - len(cypherWord(WORD_SEP))
   str1 = str1[0:end]
   return str1
 assert cypher("RHYS" + WORD_SEP + "MADER") == str(cypherWord("RHYS") + WORD_SEP + cypherWord("MADER"))
@@ -63,9 +63,7 @@ def validateCypher(str0):
 	charlist = explode(str0)
 	i = 0
 	while i < len(charlist):
-		if charlist[i] == WORD_SEP:
-			i += 1
-		elif TABLE.count(charlist[i]) > 0:
+		if TABLE.count(charlist[i]) > 0:
 			i += 1
 		else:
 			return FORM_ERROR
@@ -117,7 +115,7 @@ assert decypherWord(cypherWord("MADER")) == "MADER"
 #String -> String
 def decypher(str0):
 	global WORD_SEP
-	wordlist = str0.split(" ")
+	wordlist = str0.split(cypher(WORD_SEP))
 	i = 0
 	str1 = ""
 	while i < len(wordlist):
