@@ -2,9 +2,14 @@
 WORD_SEP = " "
 TABLE = [WORD_SEP, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 BASE = len(TABLE)
+
+WELCOME = "Welcome to the Cullen and Mader Number Cypher. Use this program to send and receive secret messages."
 HELP = "AVAILABLE COMMANDS:\n\'quit\': quit this program\n\'help\': display this help message\n\'cypher\': open cyphering program\n\'decypher\': open deyphering program"
+FAREWELL = "Thank you for using the Cullen and Mader Number Cypher."
+
 COM_ERROR = "Command not recognised."
 FORM_ERROR = "Form not recognised."
+
 COM_PROMPT = "Which command do you wish to execute? "
 CYPH_PROMPT = "What do you wish to cypher? "
 DECYPH_PROMPT = "What do you wish to decypher? "
@@ -154,25 +159,22 @@ assert validateDecypher(WORD_SEP + "123456") == FORM_ERROR
 assert validateDecypher("123456" + WORD_SEP) == FORM_ERROR
 assert validateDecypher("123" + WORD_SEP + WORD_SEP + "456") == FORM_ERROR
 
-#String -> String
-def command(str0):
-	global HELP, COM_ERROR, CYPH_PROMPT, DECYPH_PROMT
-	if str0 == "quit":
-		raise SystemExit
-	elif str0 == "help":
-		return HELP
-	elif str0 == "cypher":
-		com = raw_input(CYPH_PROMPT)
-		return cypher(com)
-	elif str0 == "decypher":
-		com = raw_input(DECYPH_PROMPT)
-		return decypher(com)
-	else:
-		return COM_ERROR
-assert command("help") == HELP
-assert command("") == COM_ERROR
-
 #MAIN
+print(WELCOME)
+print(HELP)
 while True:
 	com = raw_input(COM_PROMPT)
-	print(command(com))
+	if str0 == "quit":
+		break
+	elif str0 == "help":
+		print(HELP)
+	elif str0 == "cypher":
+		com = raw_input(CYPH_PROMPT)
+		print(cypher(com))
+	elif str0 == "decypher":
+		com = raw_input(DECYPH_PROMPT)
+		print(decypher(com))
+	else:
+		print(COM_ERROR)
+print(FAREWELL)
+raise SystemExit
