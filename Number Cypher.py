@@ -57,9 +57,8 @@ def validateCypher(str0):
 	global FORM_ERROR, WORD_SEP
 	if len(str0) <= 0:
 		return FORM_ERROR
-	if len(str0.rstrip(WORD_SEP)) < len(str0):
-		return FORM_ERROR
-	if len(str0.lstrip(WORD_SEP)) < len(str0):
+	wordlist = str0.split(WORD_SEP)
+	if wordlist.count("") > 0:
 		return FORM_ERROR
 	charlist = explode(str0)
 	i = 0
@@ -136,9 +135,8 @@ def validateDecypher(str0):
 	global FORM_ERROR, WORD_SEP
 	if len(str0) <= 0:
 		return FORM_ERROR
-	if len(str0.rstrip(WORD_SEP)) < len(str0):
-		return FORM_ERROR
-	if len(str0.lstrip(WORD_SEP)) < len(str0):
+	wordlist = str0.split(WORD_SEP)
+	if wordlist.count("") > 0:
 		return FORM_ERROR
 	charlist = explode(str0)
 	i = 0
@@ -166,10 +164,10 @@ def command(str0):
 	elif str0 == "help":
 		return HELP
 	elif str0 == "cypher":
-		com = raw_input("What do you wish to cypher? ")
+		com = raw_input(CYPH_PROMPT)
 		return cypher(com)
 	elif str0 == "decypher":
-		com = raw_input("What do you wish to decypher? ")
+		com = raw_input(DECYPH_PROMPT)
 		return decypher(com)
 	else:
 		return COM_ERROR
