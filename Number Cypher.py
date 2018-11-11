@@ -1,10 +1,11 @@
 #CONSTANTS
 WORD_SEP = " "
-TABLE = [WORD_SEP, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+KEY_SEP = ":"
+TABLE = ["WORD_SEP", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 BASE = len(TABLE)
 
 WELCOME = "Welcome to the Cullen and Mader Number Cypher. Use this program to send and receive secret messages."
-HELP = "AVAILABLE COMMANDS:\n\'quit\': quit this program\n\'help\': display this help message\n\'cypher\': open cyphering program\n\'decypher\': open deyphering program"
+HELP = "AVAILABLE COMMANDS:\n\'quit\': quit this program\n\'help\': display this help message\n\'cypher\': open cyphering program\n\'decypher\': open deyphering program\n\nACCEPTED FORMS:\nwithout key: \'<word> <word>\'\nwith key: \'<keyword>:<word> <word>\'"
 FAREWELL = "Thank you for using the Cullen and Mader Number Cypher."
 
 COM_ERROR = "Command not recognised."
@@ -27,28 +28,47 @@ assert explode("RHYS") == ["R", "H", "Y", "S"]
 assert explode("MADER") == ["M", "A", "D", "E", "R"]
 assert explode("") == []
 
-#String -> String
-def cypherWord(word):
+#String List[Integer(>0, <BASE+2)] -> String
+def cypherWord(word,keylist=[]):
 	global TABLE, BASE
 	num = 0
 	charlist = explode(word).reverse()
 	i = 0
+    j = 0
 	while i < len(charlist):
 		n = TABLE.find(charlist[i])
+      if len(keylist) > 0:
+        n += keylist[j]
+        n = n % BASE
+        j += 1
+        j = j % len(keylist)
 		num += n * BASE ** i
 		i += 1
 	return str(num)
 assert cypherWord("RHYS") == str(17 * BASE ** 3 + 7 * BASE ** 2 + 24 * BASE + 18)
 assert cypherWord("MADER") == str(12 * BASE ** 4 + 3 * BASE ** 2 + 4 * BASE + 17)
+assert cypherWord("DAVID", [2, 1]) == str((4 + 2) * BASE ** 4 + (1 + 1) * BASE ** 3 + (22 + 2) * BASE ** 2 + (9 + 1) * BASE + 4 + 2)
+assert cypherWord("CULLEN", [23, 18, 5, 9]) == str((3 + 23) * BASE ** 5 + (20 + 18 - BASE) * BASE ** 4 + (12 + 5) * BASE ** 3 + (12 + 9) * BASE ** 2 + (5 + 23 - BASE) * BASE + 14 + 18 - BASE)
 
 #String -> String
 def cypher(str0):
-	global WORD_SEP
-  words = str0.split(WORD_SEP)
+	global WORD_SEP, KEY_SEP
+  key = str0.rpartition(KEY_SEP)[2]
+  if len(key) > 0:
+    keylist = explode(key)
+    i = 0
+    while i < len(keylist):
+      keylist[i] = TABLE.find(keylist[i])
+      i += 1
+  mes = str0.rpartition(KEY_SEP)[0]
+  words = mes.split(WORD_SEP)
   i = 0
   str1 = ""
   while i < len(words):
-    str1 += cypherWord(words[i])
+    if len(keylist) > 0:
+      str1 += cypherWord(words[i], keylist)
+    else:
+      str1 += cypherWord(words[i])
     str1 += cypherWord(WORD_SEP)
     i += 1
 	end = len(str1) - len(cypherWord(WORD_SEP))
@@ -56,6 +76,7 @@ def cypher(str0):
   return str1
 assert cypher("RHYS" + WORD_SEP + "MADER") == str(cypherWord("RHYS") + WORD_SEP + cypherWord("MADER"))
 assert cypher("DAVID" + WORD_SEP + "CULLEN") == str(cypherWord("DAVID") + WORD_SEP + cypherWord("CULLEN"))
+assert cypher("KEY" + KEY_SEP + "NUMBER" + WORD_SEP + "CYPHER") == str("KEY" + KEY_SEP + cypherWord("NUMBER", [11, 5, 25]) + WORD_SEP + cypherWord("CYPHER", [11, 5, 25]))
 
 #String -> String
 def validateCypher(str0):
