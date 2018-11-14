@@ -1,7 +1,7 @@
 #CONSTANTS
 WORD_SEP = " "
 KEY_SEP = ":"
-TABLE = ["WORD_SEP", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+TABLE = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 BASE = len(TABLE)
 
 WELCOME = "Welcome to the Cullen and Mader Number Cypher. Use this program to send and receive secret messages."
@@ -80,17 +80,37 @@ assert cypher("KEY" + KEY_SEP + "NUMBER" + WORD_SEP + "CYPHER") == str("KEY" + K
 
 #String -> String
 def validateCypher(str0):
-	global FORM_ERROR, WORD_SEP
+	global FORM_ERROR, WORD_SEP, KEY_SEP
 	if len(str0) <= 0:
 		return FORM_ERROR
-	wordlist = str0.split(WORD_SEP)
+  if str0.count(KEY_SEP) > 2:
+    return FORM_ERROR
+  mes = str0.rpartition(KEY_SEP)[2]
+  key = str0.rpartition(KEY_SEP)[0]
+  if str0.count(KEY_SEP) > 0:
+    if len(key) < 1:
+      return FORM_ERROR
+    if len(key.lstrip(WORD_SEP)) < len(key):
+      return FORM_ERROR
+    if len(key.rstrip(WORD_SEP)) < len(key):
+      return FORM_ERROR
+    charlist = explode(key)
+    i = 0
+    while i < len(charlist):
+      if TABLE.find(charlist[i]) < 0:
+        return FORM_ERROR
+      else:
+        i += 1
+	wordlist = mes.split(WORD_SEP)
 	if wordlist.count("") > 0:
 		return FORM_ERROR
-	charlist = explode(str0)
+	charlist = explode(mes)
 	i = 0
 	while i < len(charlist):
 		if TABLE.count(charlist[i]) > 0:
 			i += 1
+      elif charlist[i] == WORD_SEP:
+        i += 1
 		else:
 			return FORM_ERROR
 	return cypher(str0)
