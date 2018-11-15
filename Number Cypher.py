@@ -121,6 +121,13 @@ assert validateCypher("RHYS" + WORD_SEP + WORD_SEP + "MADER") == FORM_ERROR
 assert validateCypher("RHYS" + WORD_SEP + "MADER") == cypher("RHYS" + WORD_SEP + "MADER")
 assert validateCypher(WORD_SEP + "RHYS") == FORM_ERROR
 assert validateCypher("RHYS" + WORD_SEP) == FORM_ERROR
+assert validateCypher("KEY" + KEY_SEP + "RHYS") == cypher("KEY" + KEY_SEP + "RHYS")
+assert validateCypher(KEY_SEP + "MADER") == FORM_ERROR
+assert validateCypher(WORD_SEP + "KEY" + KEY_SEP + "DAVID") == FORM_ERROR
+assert validateCypher("KEY" + WORD_SEP + KEY_SEP + "CULLEN") == FORM_ERROR
+assert validateCypher(KEY_SEP + "RHYS" + WORD_SEP + "MADER") == FORM_ERROR
+assert validateCypher("KEY" + KEY_SEP + "DAVID" + KEY_SEP + "CULLEN") == FORM_ERROR
+assert validateCypher("KEY" + KEY_SEP + WORD_SEP + "NUMBER") == FORM_ERROR
 
 #List -> String
 def impolde(list0):
